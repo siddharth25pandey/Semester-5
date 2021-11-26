@@ -1,0 +1,56 @@
+breed [value1, value2]       - where value1 is variable name and value2 is default shape name, eg - breed [wolves, wolf]
+
+turtles-own [varname]
+to setup
+clear-all
+crt 10 [
+set size 1.5
+set color white
+setxy randomx-cor random-ycor
+] 
+reset-ticks
+end
+
+to setup
+create-wolves num-wolve [         -> where num-wolve is value given by the slider 
+
+]
+end
+
+
+to go
+ask turtles
+[
+fd 10
+rt random 180
+]
+tick
+end
+
+to-report funcname
+your code lines here
+report ans
+end
+
+
+important commands
+set pcolor color
+any?
+show [who] turtle
+one-of other turtle-here
+ask turtle with [color = black]
+
+create-link-with one-of other turtle
+create-links-with n-of other turtle
+
+ifelse [][]
+
+move-to 
+
+
+
+Buttons -  to run different procedures like setup , go etc
+Slider - to give initial values
+Monitor - to show counts or plots
+
+NOTE :don't foregt ticks command in go procedure and to turn on ticks on interface while running

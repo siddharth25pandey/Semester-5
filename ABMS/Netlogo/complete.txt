@@ -1,0 +1,416 @@
+/*
+
+
+
+;;// Tuturles
+;-------------
+;observer> create-turtles 50
+;observer> crt 10
+;observer> ask turtles [fd 15 rt 30]
+;observer> ask turtles [forward 25 right 50]
+;observer> ask turtles [set color green]
+;observer> ask turtles [set size 4]
+;observer> ask turtles [repeat 5 [back 4 left 20]]
+;observer> ask turtles [pen-down]
+;observer> ask turtles [repeat 5 [back 4 left 20]]
+;observer> clear-drawing
+;observer> clear-all
+;observer> create-turtles 12
+;observer> ask turtles [set color yellow set size 3]
+;observer> ask turtles [repeat 6 [fd 10 rt 5]]
+;observer> ask turtles [die]
+;observer> ask turtles [set ycor 15]
+;observer> ask turtles [set xcor 25 set ycor 25]
+;observer> ask turtles [set xcor random-xcor set ycor random-ycor]
+;create-link-with one-of other turtle
+;create-links-with n-of other turtle
+
+;// Patches
+;-------------
+;observer> ask patches [set pcolor blue]
+;observer> ask patches [set pcolor pxcor * pycor]
+;observer> create-turtles 100
+;observer> ask turtles [setxy random-xcor random-ycor]
+;observer> ask turtles [set pcolor color]
+;observer> ask turtles [ facexy pxcor pycor]
+;observer> ask patches [set pcolor black]
+;observer> ask turtles [repeat 4[fd 10 rt 15]]
+
+
+
+;globals [sid]
+;turtles-own [income holiday]
+;to setup
+;  clear-all
+;  crt 100 [
+;    setxy random-xcor random-ycor
+;   set color blue
+;   set shape "x"
+;    set income random 100
+;  ]
+
+;  set sid 25
+;  reset-ticks
+
+;end
+
+;to go
+;  ask turtles [
+;    forward 5
+;    rt random 90
+;    set income income + sid
+;    if income > 25 [
+;      set sid  sid + 1
+;      set color red
+;    ]
+;  ]
+;  tick
+;end
+
+*/
+
+
+/*
+Ball Jump
+------------
+
+
+globals [x]
+
+to setup
+  set x 0
+  print "setting environment"
+  clear-all
+  setup-patches
+  setup-turtles
+  reset-ticks
+end
+
+to setup-objects
+
+end
+
+to setup-patches
+  ask patches [set pcolor green]
+end
+
+to setup-turtles
+  repeat 1 [crt 1 [setxy 0 0 set shape "circle" set heading 180] set x x + 2]
+end
+
+to go
+  set x true
+  ask turtles [
+    if not x [die]
+    task
+    if ycor = 20 [rt 90 fd 1 rt 90 task]
+    if ycor = 0 [rt -90 fd 1 rt -90 task]
+    fd 1
+
+  ]
+  tick
+end
+
+to task
+  if pcolor =  green [set pcolor brown]
+end
+
+to-report exist
+  set x false
+  ask patches [
+    if pcolor = green [set x true]
+  ]
+end
+*/
+/*
+Link-Relation
+---------------
+
+
+
+breed [ nodes node ]
+breed [ bots bot ]
+
+nodes-own [ visited ]
+
+to setup
+  clear-all
+  set-default-shape nodes "square"
+  create-nodes num-nodes [
+    set size 2
+    set color white
+    setxy random-xcor random-ycor
+    set visited 0
+  ]
+  setup-path
+  choose-target
+  setup-bot
+  reset-ticks
+end
+
+to setup-path
+  ask nodes [
+    create-links-with n-of 2 other nodes
+  ]
+end
+
+to setup-bot
+  create-bots 1 [
+    set color red
+    set size 1.5
+    move-to one-of nodes with [color != yellow]
+  ]
+end
+
+to choose-target
+  ask one-of nodes [
+    set color yellow
+  ]
+end
+
+to go
+  if (count nodes with [color = green]) > 0
+  [ stop ]
+  ask bots [
+    let current-node one-of other turtles-here
+    ifelse [color] of current-node = yellow
+    [
+      print "Solution Found"
+      update-current-node current-node
+    ]
+    [
+      update-current-node current-node
+      let target find-target current-node
+      ifelse target != nobody
+      [
+        move-to target
+      ]
+      [
+        print "Nowhereelse to go "
+      ]
+    ]
+  ]
+  tick
+end
+
+to-report find-target [current-node]
+  let neighbor-nodes [link-neighbors] of current-node
+  let sorted-link-neighbors sort-on [visited] neighbor-nodes
+  report first sorted-link-neighbors
+end
+
+to update-current-node [current-node]
+  ask current-node [
+    ifelse color = yellow [set color green] [ set color blue ]
+    set visited visited + 1
+  ]
+end
+
+*/
+
+/*
+Star Dispercing
+-------------------
+
+turtles-own [wealth]
+globals [x1 x]
+
+to setup
+  reset-ticks
+  setup-turtles
+end
+
+to setup-turtles
+  cro co-tur
+end
+
+to go
+
+  ask turtles [fd 1]
+  tick
+end
+
+to ba
+  ask turtles [fd -1]
+  tick
+end
+
+
+to pri
+  show x1
+  repeat 5 [appe]
+end
+
+to appe
+  set x1 x1 + 1
+  print x1
+end
+
+to chk
+  if (25 != sq 5) [error "error in caluclating"]
+end
+
+
+to-report sq[p]
+  report p * p
+end
+
+to co
+  ask patches [
+    if (pycor > 0 and pxcor > 0) [set pcolor red]
+    if (pxcor < 0 and pycor > 0) [set pcolor green]
+    if (pxcor < 0 and pycor < 0) [set pcolor blue]
+    if (pxcor > 0 and pycor < 0) [set pcolor pink]
+    if (pycor = 0) [set pcolor white]
+
+  ]
+end
+
+*/
+
+/*
+
+Cow Wolves
+-----------
+
+patches-own [grass-amount]
+breed [cows cow]
+breed [wolves wolf]
+turtles-own [energy]
+cows-own [cow-eat-time]
+wolves-own [target-cow hunger-count]
+to setup-grass-amount
+  set pcolor scale-color green grass-amount -20 30
+end
+to setup-grass
+  ask patches[
+    set grass-amount random-float 20.0
+    setup-grass-amount
+  ]
+end
+
+to setup-cows
+  create-cows no_cows [
+    set color white
+    setxy random-xcor random-ycor
+    set energy int-cow-energy
+  ]
+
+end
+
+to setup-wolves
+  create-wolves no_wolves [
+    setxy random-xcor random-ycor
+    set color brown
+    set energy int-wolf-energy
+    set target-cow nobody
+    set hunger-count 0
+    if any? cows-on neighbors [
+      set target-cow one-of cows-on neighbors
+      create-link-with target-cow
+      ask link-neighbors [set color red]
+    ]
+  ]
+end
+
+to setup
+  clear-all
+  set-default-shape wolves "wolf"
+  set-default-shape cows "cow"
+  setup-grass
+  setup-cows
+  setup-wolves
+  reset-ticks
+end
+
+to go
+  go-cows
+  go-wolves
+  regrow-grass
+  tick
+end
+
+to go-wolves
+  ask wolves [
+    fd 1
+    set energy energy - 1
+    set hunger-count hunger-count - 1
+    if target-cow != nobody and hunger-count <= 0 [
+      set energy energy + [energy] of target-cow
+      ask target-cow [die]
+      set hunger-count 5
+
+     if any? cows-on neighbors [
+      set target-cow one-of cows-on neighbors
+      create-link-with target-cow
+      ask link-neighbors [set color red]
+    ]
+    ]
+    ;create-link-with one-of  neighbors
+    ;let target-cow [one-of cows-at neighbors]
+
+    if energy > 20 [
+      reproduce-wolf
+    ]
+
+    if energy < 0 [
+    die
+  ]
+
+  ]
+
+end
+
+to reproduce-wolf
+  if energy > 25 [
+    hatch 1[
+      set energy 10
+      if any? cows-on neighbors [
+      set target-cow one-of cows-on neighbors
+      create-link-with target-cow
+      ask link-neighbors [set color red]
+    ]
+  ]
+  ]
+end
+
+to go-cows
+
+  ask cows [
+    fd 1
+  rt random 180
+    set energy energy - 1
+    eat-grass
+    reproduce
+  ]
+end
+
+to reproduce
+  if energy > 15 [
+    hatch 1 [
+      set energy 10
+    ]
+  ]
+end
+
+to eat-grass
+  set cow-eat-time cow-eat-time - 1
+  if energy <= 0 [
+    die
+  ]
+  if grass-amount > 5 and cow-eat-time <= 0 [
+    set energy energy + 5
+    set cow-eat-time 4
+    set grass-amount grass-amount - 5
+  ]
+
+end
+
+
+to regrow-grass
+  ask patches with [grass-amount < 5] [
+    set grass-amount grass-amount + regrowth-rate
+  ]
+end
+
+*/

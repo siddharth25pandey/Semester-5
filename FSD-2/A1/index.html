@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation Web App (S20190010163)</title>
+    <script src="server.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Form Validation</h1>
+    <form name="studentinfo" action="result.html" onsubmit="return check()" method="GET">
+        <label for="text">FirstName</label>
+        <input type="text" id="first" name="first">
+        <label for="text">LastName</label>
+        <input type="text" id="last" name="last">
+        <br>
+        <label for="text">Phone Number</label>
+        <input type="text" id="phone" name="phone">
+        <br>
+        <label for="text">Roll Number</label>
+        <input type="text" id="roll" name="roll">
+        <br>
+        <input type="submit" value="submit">
+
+    </form>
+</body>
+
+</html>
